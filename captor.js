@@ -58,5 +58,30 @@ if (Meteor.isServer) {
             console.log(query)
             res.end("Error: Invalid arguments for new user");
         }
+    });
+
+    Router.route('/api/createUser
+', {
+        where: 'server'
+    }).post(function() {
+        var req = this.request;
+        var res = this.response;
+        var query = req.query;
+
+        if (query.username) {
+            if (Clients.findOne({
+                    username: query.username
+                }) == undefined) {
+                Clients.insert({
+                    username: query.username,
+                    history: []
+                });
+                res.end("User " + query.username + " created");
+            } else {
+                res.end("User already exists.")
+            }
+        } else {
+            res.end("Error: Invalid arguments for new user");
+        }
     })
 }
